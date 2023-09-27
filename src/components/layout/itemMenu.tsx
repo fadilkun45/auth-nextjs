@@ -10,7 +10,7 @@ const ItemMenu = ({item}: {item: menuItem}) => {
 
 
     return (
-        <Link href={item.url} className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600"  >
+        <Link href={item.url} className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-indigo-500"  >
             <span className="text-2xl">
                 <i className="bx bx-cart" />
             </span>

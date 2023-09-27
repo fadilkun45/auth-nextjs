@@ -5,12 +5,12 @@ const Sidebar = ({showSidebar}: {showSidebar: boolean}) => {
 
     const menuItem = [
         {
-            url: "#",
+            url: "/dashboard",
             title: "Dashboard"
         },
         {
-            url: "#",
-            title: "Detail"
+            url: "/dashboard/crud",
+            title: "CRUD Page"
         },
         {
             url: "#",
