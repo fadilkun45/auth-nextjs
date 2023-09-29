@@ -32,7 +32,7 @@ const Sidebar = ({ showSidebar }: { showSidebar: boolean }) => {
 
             }}
             data-isOpen={showSidebar}
-            className={`sidebar absolute w-full  md:static md:w-72 flex-col space-y-2 border-r-2 border-gray-200 bg-white p-2`}
+            className={` ${showSidebar ? "hidden md:flex" : "flex md:hidden"}  absolute w-full  md:static md:w-72 flex-col space-y-2 border-r-2 border-gray-200 bg-white p-2`}
             style={{ height: "90.5vh" }}
         >
             {
@@ -46,4 +46,3 @@ const Sidebar = ({ showSidebar }: { showSidebar: boolean }) => {
 
 export default Sidebar
 
-// ${showSidebar ? "hidden md:flex" : "flex md:hidden"} 
