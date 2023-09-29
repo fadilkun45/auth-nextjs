@@ -4,7 +4,7 @@ import Sidebar from '@/components/layout/sidebar'
 import React, { ReactNode, useState } from 'react'
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const [toggleMenu, setToggleMenu] = useState(false)
+  const [toggleMenu, setToggleMenu] = useState(true)
 
   return (
     <main className="w-full overflow-hidden h-screen bg-gray-100 text-gray-700" >

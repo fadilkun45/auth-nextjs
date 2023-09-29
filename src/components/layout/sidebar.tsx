@@ -18,10 +18,12 @@ const Sidebar = ({showSidebar}: {showSidebar: boolean}) => {
         }
     ]
 
+    console.log(showSidebar)
+
     return (
         <aside
-            className="flex absolute w-full transition  md:static md:w-72 flex-col space-y-2 border-r-2 border-gray-200 bg-white p-2"
-            style={{ height: "90.5vh" , display: showSidebar ? "" : "none"}}
+            className={` ${showSidebar ? "hidden md:flex" : "flex md:hidden"} absolute w-full transition  md:static md:w-72 flex-col space-y-2 border-r-2 border-gray-200 bg-white p-2`}
+            style={{ height: "90.5vh" }}
         >
            {
             menuItem?.map((x, index) => (
