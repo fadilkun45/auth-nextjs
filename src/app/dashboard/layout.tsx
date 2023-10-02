@@ -1,13 +1,23 @@
 "use client"
 import Navbar from '@/components/layout/navbar'
 import Sidebar from '@/components/layout/sidebar'
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { useAuthContext } from '../context/auth/authProvider'
 import Loading from '@/components/loading'
+import Cookies from 'js-cookie'
+import { useRouter } from 'next/navigation'
 
 const Layout = ({ children }: { children: ReactNode }) => {
+  const router = useRouter()
   const { user } = useAuthContext()
   const [toggleMenu, setToggleMenu] = useState(true)
+
+
+  useEffect(() => {
+   if(!Cookies.get('refreshtoken')){
+    router.push('/login')
+   }
+  },[])
 
   return (
     <>

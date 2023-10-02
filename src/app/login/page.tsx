@@ -1,30 +1,48 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { auth } from '../service/firebase'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { useAuthContext } from '../context/auth/authProvider'
 import { useRouter } from 'next/navigation'
 import Cookie from 'js-cookie'
+import Loading from '@/components/loading'
+
 const Page = () => {
-const {setLogin} = useAuthContext()
-const {push} = useRouter()
+  const [loading, setLoading] = useState(false)
+  const {setLogin} = useAuthContext()
+const router = useRouter()
 
   const googleLogin = async () => {
+    setLoading(true)
     const provider = new GoogleAuthProvider()
     const callback = await signInWithPopup(auth, provider)
+
     try {
       Cookie.set('refreshtoken',callback.user.refreshToken)
       setLogin(callback.user.refreshToken)
-      push('/dashboard')
-    //  console.log(callback)
+      setLoading(false)
+      router.replace('dashboard')
     } catch (error) {
-      
+      setLoading(false)
     }
   }
 
+  useEffect(() => {
+    if(Cookie.get('refreshtoken')){
+      router.push('/dashboard')
+     }
+  },[])
+
+
+  
+
 
     return (
+      <>
+      {
+        loading && <Loading />
+      }
         <section className="flex flex-col md:flex-row h-screen items-center">
         <div className="bg-indigo-600 hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
           <img
@@ -128,6 +146,8 @@ const {push} = useRouter()
         </div>
      
       </section>
+      
+      </>
     )
 }
 
