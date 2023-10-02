@@ -1,7 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
+import { auth } from '../service/firebase'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { useAuthContext } from '../context/auth/authProvider'
+import { useRouter } from 'next/navigation'
+import Cookie from 'js-cookie'
+const Page = () => {
+const {setLogin} = useAuthContext()
+const {push} = useRouter()
 
-const page = () => {
+  const googleLogin = async () => {
+    const provider = new GoogleAuthProvider()
+    const callback = await signInWithPopup(auth, provider)
+    try {
+      Cookie.set('refreshtoken',callback.user.refreshToken)
+      setLogin(callback.user.refreshToken)
+      push('/dashboard')
+    //  console.log(callback)
+    } catch (error) {
+      
+    }
+  }
+
+
     return (
         <section className="flex flex-col md:flex-row h-screen items-center">
         <div className="bg-indigo-600 hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
@@ -61,6 +83,7 @@ const page = () => {
             </form>
             <hr className="my-6 border-gray-300 w-full" />
             <button
+              onClick={googleLogin}
               type="button"
               className="w-full block bg-white hover:bg-gray-100 focus:bg-gray-100 text-gray-900 font-semibold rounded-lg px-4 py-3 border border-gray-300"
             >
@@ -108,4 +131,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

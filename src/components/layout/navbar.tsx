@@ -1,8 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
+import { useAuthContext } from '@/app/context/auth/authProvider'
+import { auth } from '@/app/service/firebase'
+import { signOut } from 'firebase/auth'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import Cookies from 'js-cookie'
 
 const Navbar = ({ toggle }: { toggle: () => void }) => {
+    const { push } = useRouter()
     const [modalProfile, setModalProfile] = useState(false)
+    const {user} = useAuthContext()
+
+    const logout = async () => {
+        const callback = await signOut(auth)
+        try {
+            push("/login")
+            Cookies.remove('refreshtoken')
+        } catch (error) {
+            
+        }
+    }
 
     return (
         <header className="flex w-full items-center justify-between border-b-2 border-gray-200 bg-white p-2">
@@ -20,19 +37,19 @@ const Navbar = ({ toggle }: { toggle: () => void }) => {
                 <button type="button" className="h-9 w-9 overflow-hidden rounded-full"
                     onClick={() => setModalProfile(!modalProfile)}
                 >
-                    <img src="https://plchldr.co/i/40x40?bg=111111" alt="plchldr.co" />
+                    <img src={user?.auth?.currentUser?.photoURL} alt="plchldr.co" />
                 </button>
 
                 <div className={`${modalProfile ? "" : "hidden"}  absolute right-2 mt-1 w-48 divide-y divide-gray-200 rounded-md border border-gray-200 bg-white shadow-md`}>
                     <div className="flex items-center space-x-2 p-2">
                         <img
-                            src="https://plchldr.co/i/40x40?bg=111111"
+                            src={user?.auth?.currentUser?.photoURL}
                             alt="plchldr.co"
                             className="h-9 w-9 rounded-full"
                             width={30}
                             height={30}
                         />
-                        <div className="font-medium">Hafiz Haziq</div>
+                        <div className="text-sm">{user?.auth?.currentUser?.displayName}</div>
                     </div>
 
                     <div className={`flex flex-col space-y-3 p-2`}>
@@ -48,7 +65,7 @@ const Navbar = ({ toggle }: { toggle: () => void }) => {
                     </div>
 
                     <div className="p-2">
-                        <button className="flex items-center space-x-2 transition hover:text-blue-600">
+                        <button onClick={logout} className="flex items-center space-x-2 transition hover:text-blue-600">
                             <svg
                                 className="h-4 w-4"
                                 fill="none"

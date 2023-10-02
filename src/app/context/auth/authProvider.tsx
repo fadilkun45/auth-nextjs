@@ -1,19 +1,39 @@
 "use client"
-import { createContext, useContext, useState } from "react"
+import { auth } from "@/app/service/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { createContext, useContext, useEffect, useState } from "react"
 
 export type AuthContextType = {
-    login?: string,
-    setLogin: (arg: any) => void
+    login?: any,
+    setLogin: (arg: any) => void,
+    user?: any,
+    setUser?: (arg: any) => void,
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthContextProvider = ({children}: {children: React.ReactNode}) => {
 
-    const [login, setLogin] = useState()
+  const [user, setUser] = useState<any>(null)
+  const [login, setLogin] = useState<any>()
+
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setLogin(localStorage.getItem('refreshtoken') || "")
+    }
+    
+  },[])
+
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+      });
+      return () => unsubscribe();
+    }, [user]);
 
   return (
-    <AuthContext.Provider value={{login,setLogin}}>
+    <AuthContext.Provider value={{login,setLogin, user, setUser}}>
         {children}
     </AuthContext.Provider>
   )

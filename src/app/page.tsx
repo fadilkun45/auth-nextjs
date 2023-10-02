@@ -7,6 +7,6 @@ export default function Home() {
 
   const {push} = useRouter()
 
- return   push('/dashboard')
+ return  push('/login')
 
 }
